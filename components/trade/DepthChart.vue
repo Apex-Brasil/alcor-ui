@@ -62,7 +62,6 @@ export default {
           minPadding: 0,
           maxPadding: 0,
           backgroundColor: {
-            linearGradient: [0, 0, 500, 500],
             stops: [
               [0, 'rgb(40, 40, 40)'],
               [1, 'rgb(40, 40, 40)']
@@ -246,7 +245,7 @@ export default {
               enabled: false
             },
             data: [],
-            color: '#fc5857'
+            color: 'var(--color-secondary-op)'
           },
           {
             name: 'WAX',
@@ -254,7 +253,7 @@ export default {
               enabled: false
             },
             data: [],
-            color: '#66C167'
+            color: 'var(--color-primary-op)'
           }
         ]
       },
@@ -445,9 +444,11 @@ export default {
   -moz-user-select: none;
   -o-user-select: none;
   user-select: none;
+
   .highcharts-container {
     height: 100% !important;
     width: 100% !important;
+
     .highcharts-root {
       height: 100% !important;
       width: 100% !important;
@@ -457,10 +458,12 @@ export default {
 
 .chart-nav.scale-value-nav {
   width: 100% !important;
+  background-color: var(--background-color-base);
 }
 
 .order-depth .el-tabs__content {
   height: calc(100% - 30px);
+
   .el-tab-pane,
   .chart-nav,
   .chart-part,

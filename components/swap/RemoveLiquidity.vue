@@ -4,7 +4,7 @@
     .row.mt-4
       .col
         .d-flex.justify-content-between.select-label
-          small.mb-1 From
+          small.mb-1 {{ $t('From') }}
           small.mb-1(v-if="withdraw_token") {{ withdraw_token.amount }} {{ withdraw_token.symbol }}
             i.el-icon-wallet.ml-1
 
@@ -28,7 +28,7 @@
         .col
           PleaseLoginButton.confirm-button
             el-button(v-if="parseFloat(amount)" type="primary" @click="withdraw" :loading="loading").w-100 Withdraw
-            el-button(v-else type="primary" disabled).w-100 Select Amount
+            el-button(v-else type="primary" disabled).w-100 {{ $t('Select Amount') }}
 
 </template>
 

@@ -5,7 +5,7 @@
       :to="to"
       :exact="exact"
       :key="name"
-    ) {{name}}
+    ) {{ $t(name) }}
 </template>
 
 <script>
@@ -15,12 +15,12 @@ export default {
   components: { AlcorLink },
   data: () => ({
     urls: [
-      { name: 'Tokens', to: '/wallet', exact: true },
-      { name: 'Open Orders', to: '/wallet/positions' },
-      { name: 'History', to: '/wallet/history' },
-      { name: 'NFT’s', to: '/wallet/nfts', isNFT: true },
-      { name: 'Liquidity Pools', to: '/wallet/liquidity_pools' },
-      { name: 'Resources', to: '/wallet/resources' }
+      { name: 'Tokens', to: '/wallet-inventory', exact: true },
+      { name: 'Open Orders', to: '/wallet-inventory/positions' },
+      { name: 'History', to: '/wallet-inventory/history' },
+      { name: 'NFT’s', to: '/wallet-inventory/nfts', isNFT: true },
+      { name: 'Liquidity Pools', to: '/wallet-inventory/liquidity_pools' },
+      { name: 'Resources', to: '/wallet-inventory/resources' }
     ]
   }),
   watch: {
@@ -54,32 +54,39 @@ export default {
   overflow: auto;
   padding: 4px 0;
   background: var(--background-color-base);
+
   &::-webkit-scrollbar {
     height: 4px;
     width: 4px;
     display: block;
   }
+
   &::-webkit-scrollbar-thumb {
     // background: rgba(gray, 0.3);
     border-radius: 5px;
   }
 }
+
 .tab-bar-item {
   flex: 1;
   border-radius: 8px;
   padding: 12px;
   margin: 0 8px;
   white-space: nowrap;
+
   &:first-child {
     margin-left: 0;
   }
+
   &:last-child {
     margin-right: 0;
   }
+
   &.active {
-    background: var(--hover);
+    background: var(--btn-active);
   }
 }
+
 @media only screen and (max-width: 940px) {
   .tab-bar-item {
     border-radius: 4px;

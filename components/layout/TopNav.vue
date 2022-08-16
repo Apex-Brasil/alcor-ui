@@ -1,7 +1,7 @@
 <template lang="pug">
 nav.nav(v-if='!isMobile')
   .nav-side.nav-left
-    nuxt-link(to='/')
+    nuxt-link(:to="localePath('index', $i18n.locale)")
       img.logo(
         v-if='$colorMode.value == "light"',
         src='~/assets/logos/alcorblack.svg',
@@ -16,17 +16,17 @@ nav.nav(v-if='!isMobile')
     ul.nav-items
       li(v-for='item in menuItems', :key='item.index')
         AlcorLink.item(
-          :to='item.index',
+          :to="localePath(item.index, $i18n.locale)",
           flat,
           :class='{ active: isActive(item.index) }'
         )
-          | {{ item.name }}
+          | {{ $t(item.name) }}
   .nav-side.nav-right
     ConnectNav
 .menu-and-menu-header(v-else)
   .menu-header
     .logo
-      nuxt-link(to='/')
+      nuxt-link(:to="localePath('index', $i18n.locale)")
         img.logo(
           v-if='$colorMode.value == "light"',
           src='~/assets/logos/alcorblack.svg',
@@ -41,6 +41,15 @@ nav.nav(v-if='!isMobile')
 
     .mobile-chain-select
       chain-select
+
+    AlcorButton(
+      :icon-only-alt='true',
+      @click='showSetting = !showSetting'
+    )
+      i.el-icon-setting.show-settings
+
+    settings.settings(v-if='showSetting', v-click-outside='onClickOutside')
+
 
     AlcorButton(@click='openMenu', :icononlyalt='true')
       i.el-icon-more
@@ -71,18 +80,21 @@ import AlcorButton from '~/components/AlcorButton'
 import AlcorLink from '~/components/AlcorLink'
 import ConnectNav from '~/components/layout/ConnectNav'
 import ChainSelect from '~/components/elements/ChainSelect'
+import Settings from '~/components/layout/Settings'
 
 export default {
   components: {
     AlcorLink,
     AlcorButton,
     ConnectNav,
-    ChainSelect
+    ChainSelect,
+    Settings
   },
 
   data() {
     return {
       menuActive: false,
+      showSetting: false
     }
   },
 
@@ -120,6 +132,12 @@ export default {
   },
 
   methods: {
+    onClickOutside(event) {
+      if (this.showSetting) {
+        this.showSetting = false
+      }
+    },
+
     isActive(index) {
       const { path } = this.$route
 
@@ -142,6 +160,20 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.alcor-button {
+  height: 26px;
+}
+
+.settings {
+  position: absolute;
+  top: 50px;
+  right: 0px;
+  background: var(--table-background);
+  border: var(--border-2);
+  border-radius: 2px;
+  z-index: 9;
+}
+
 .mobile-chain-select {
   display: flex;
   align-items: center;
@@ -185,6 +217,8 @@ export default {
   .item {
     padding: 4px 14px;
     margin-right: 4px;
+    display: flex;
+    align-items: center;
 
     &.active {
       background: var(--btn-active);
@@ -198,6 +232,7 @@ export default {
   //justify-content: space-between;
   align-items: center;
   padding: 8px;
+  gap: 5px;
 }
 
 .menu {
@@ -247,8 +282,8 @@ export default {
     display: flex;
 
     &.active {
-      background: #161617;
-      color: #f2f2f2 !important;
+      background: var(--btn-active);
+      color: var(--text-default) !important;
     }
   }
 }

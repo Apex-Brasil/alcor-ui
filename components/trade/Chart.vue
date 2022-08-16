@@ -9,11 +9,12 @@ import { Big } from 'big.js'
 import { mapState, mapGetters } from 'vuex'
 
 export default {
+  props: ['blank'],
   data() {
     return {
       resolution: 240,
 
-      onRealtimeCallback: () => {},
+      onRealtimeCallback: () => { },
       widget: null,
       onResetCacheNeededCallback: null,
       executionshape: '',
@@ -21,7 +22,39 @@ export default {
       isReady: false,
       orderLines: [],
       gridExecutions: [],
-      deals: []
+      deals: [],
+      chartThemes: {
+        light: {
+          background: '#F0F2F5',
+          textColor: '#303133',
+          gridColor: 'rgba(50, 50, 50, .03)',
+          scaleLineColor: '#CDD0D6'
+        },
+        dark: {
+          background: '#212121',
+          textColor: '#bdbdbd',
+          gridColor: 'rgba(200, 200, 200, .03)',
+          scaleLineColor: '#444444'
+        }
+      },
+      chartColors: {
+        default: {
+          candleUpColor: '#26a69a',
+          candleDownColor: '#f96c6c'
+        },
+        bloom: {
+          candleUpColor: '#277DFA',
+          candleDownColor: '#FFAB2E'
+        },
+        cyber: {
+          candleUpColor: '#00AB4A',
+          candleDownColor: '#F22B55'
+        },
+        contrast: {
+          candleUpColor: '#00B909',
+          candleDownColor: '#C60606'
+        }
+      }
     }
   },
 
@@ -48,6 +81,9 @@ export default {
   watch: {
     '$colorMode.value'() {
       this.mountChart()
+    },
+    '$store.state.settings.tradeColor'() {
+      this.applyTheme()
     },
 
     userOrders() {
@@ -126,6 +162,48 @@ export default {
       const twChart = this.$store.state.settings.twChart[this.id]
       if (!twChart || !twChart.charts) return
       this.widget.load(twChart)
+    },
+    applySettings() {
+      if (this.blank) {
+        this.$store.commit('market/backupChartOrdersSettings')
+        this.$store.commit('market/setChartOrdersSettingsDefault')
+      } else {
+        this.$store.commit('market/setChartOrdersSettingsFromBackup')
+      }
+    },
+    applyTheme() {
+      const theme = this.chartThemes[this.$colorMode.value]
+      const colors = this.chartColors[window.localStorage.getItem('trade-theme')]
+      const isFundamentalPage = this.$route.name.startsWith('fundamentals-slug')
+
+      this.widget.onChartReady(() => {
+        this.widget.applyOverrides({
+          volumePaneSize: 'medium',
+          'paneProperties.background': theme.background,
+          'scalesProperties.textColor': theme.textColor,
+
+          'paneProperties.vertGridProperties.color': theme.gridColor,
+          'paneProperties.horzGridProperties.color': theme.gridColor,
+
+          'mainSeriesProperties.style': isFundamentalPage ? 3 : 1,
+
+          'mainSeriesProperties.areaStyle.color1': 'rgba(88, 177, 75, .28)',
+          'mainSeriesProperties.areaStyle.color2': 'rgba(88, 177, 75, 0)',
+          'mainSeriesProperties.areaStyle.linecolor': 'rgba(88, 177, 75, 1)',
+
+          'mainSeriesProperties.candleStyle.upColor': colors.candleUpColor,
+          'mainSeriesProperties.candleStyle.downColor': colors.candleDownColor,
+          'mainSeriesProperties.candleStyle.drawBorder': false,
+          'mainSeriesProperties.candleStyle.wickUpColor': colors.candleUpColor,
+          'mainSeriesProperties.candleStyle.wickDownColor': colors.candleDownColor,
+          'mainSeriesProperties.hollowCandleStyle.upColor': colors.candleUpColor,
+          'mainSeriesProperties.hollowCandleStyle.downColor': colors.candleDownColor,
+          'mainSeriesProperties.hollowCandleStyle.wickUpColor': colors.candleUpColor,
+          'mainSeriesProperties.hollowCandleStyle.wickDownColor': colors.candleDownColor,
+
+          'scalesProperties.lineColor': theme.scaleLineColor
+        })
+      })
     },
 
     reset() {
@@ -380,6 +458,10 @@ export default {
 
     mountChart() {
       const { $TVChart: { Widget } } = this
+      console.log('mountChart')
+
+      const theme = this.chartThemes[this.$colorMode.value]
+      const colors = this.chartColors[window.localStorage.getItem('trade-theme')]
 
       const widgetOptions = {
         symbol: this.quote_token.symbol.name,
@@ -513,10 +595,10 @@ export default {
           'compare_symbol',
           'border_around_the_chart',
           'header_saveload',
-          'control_bar',
+          //'control_bar',
+          this.isMobile ? 'left_toolbar' : undefined,
 
           //'symbol_search_hot_key',
-          this.isMobile ? 'left_toolbar' : undefined,
 
           'cropped_tick_marks',
           'trading_notifications',
@@ -524,6 +606,7 @@ export default {
           //'end_of_period_timescale_marks',
           'datasource_copypaste',
           'chart_crosshair_menu',
+          'show_zoom_and_move_buttons_on_touch',
 
           //'shift_visible_range_on_new_bar',
           'go_to_date',
@@ -542,12 +625,13 @@ export default {
           //'context_menus',
           //'edit_buttons_in_legend',
           'volume_force_overlay',
-          'delete_button_in_legend',
+          'delete_button_in_legend'
           //'property_pages',
         ],
         enabled_features: [
           'side_toolbar_in_fullscreen_mode',
-          'header_in_fullscreen_mode',
+          this.isMobile ? 'hide_left_toolbar_by_default' : null,
+          'header_in_fullscreen_mode'
         ],
 
         //fullscreen: false,
@@ -560,11 +644,23 @@ export default {
 
         overrides: {
           volumePaneSize: 'medium',
-          'paneProperties.background': this.$colorMode.value == 'light' ? '#F3FAFC' : '#212121',
-          'scalesProperties.textColor': this.$colorMode.value == 'light' ? '#4a4a4a' : '#9EABA3',
+          'paneProperties.background': theme.background,
+          'scalesProperties.textColor': theme.textColor,
 
-          'paneProperties.vertGridProperties.color': this.$colorMode.value == 'light' ? '#F3FAFC' : '#212121',
-          'paneProperties.horzGridProperties.color': this.$colorMode.value == 'light' ? '#F3FAFC' : '#303130e4'
+          'paneProperties.vertGridProperties.color': theme.gridColor,
+          'paneProperties.horzGridProperties.color': theme.gridColor,
+
+          'mainSeriesProperties.candleStyle.upColor': colors.candleUpColor,
+          'mainSeriesProperties.candleStyle.downColor': colors.candleDownColor,
+          'mainSeriesProperties.candleStyle.drawBorder': false,
+          'mainSeriesProperties.candleStyle.wickUpColor': colors.candleUpColor,
+          'mainSeriesProperties.candleStyle.wickDownColor': colors.candleDownColor,
+          'mainSeriesProperties.hollowCandleStyle.upColor': colors.candleUpColor,
+          'mainSeriesProperties.hollowCandleStyle.downColor': colors.candleDownColor,
+          'mainSeriesProperties.hollowCandleStyle.wickUpColor': colors.candleUpColor,
+          'mainSeriesProperties.hollowCandleStyle.wickDownColor': colors.candleDownColor,
+
+          'scalesProperties.lineColor': theme.scaleLineColor,
         },
 
         loading_screen: {
@@ -576,13 +672,15 @@ export default {
       this.widget = new Widget(widgetOptions)
       this.widget.onChartReady(() => {
         this.load()
+        this.applyTheme()
+        this.applySettings()
 
         this.widget.subscribe('onAutoSaveNeeded', () => {
           this.save()
         })
       })
-    },
-  },
+    }
+  }
 }
 </script>
 
@@ -590,6 +688,7 @@ export default {
 #tv_chart_container {
   height: calc(100%) !important;
 }
+
 @media only screen and (max-width: 1000px) {
   #tv_chart_container {
     height: 360px;

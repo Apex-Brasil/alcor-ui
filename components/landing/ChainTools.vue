@@ -1,13 +1,13 @@
 <template lang="pug">
 .chain-tools
-  SectionTitle.section-title On-Chain Tools
+  SectionTitle.section-title {{ $t('ONCHAIN_TOOLS_TITLE') }}
   .items
     .item(v-for='{ icon, name, description, to } in chainTools')
-      nuxt-link.item-inner(:to="to")
+      nuxt-link.item-inner(:to="localePath(to, $i18n.locale)")
         .icon-container
           img.icon(:src='icon')
-        .h3 {{ name }}
-        .desc {{ description }}
+        .h3 {{ $t(name) }}
+        .desc {{ $t(description) }}
   Spacer
 </template>
 
@@ -88,7 +88,7 @@ export default {
     transition: all 0.3s;
 
     &:hover {
-      background-color: rgba(21, 21, 21, .3);
+      background-color: var(--hover);
     }
 
     .icon-container {
@@ -114,6 +114,7 @@ export default {
 
     .desc {
       color: var(--text-grey-thirdly);
+      text-align: center;
     }
   }
 }
@@ -122,6 +123,7 @@ export default {
   .items {
     justify-content: center;
     gap: 20px;
+
   }
 }
 

@@ -1,46 +1,51 @@
 <template lang="pug">
 .supported-chains
   .alcor-inner
-    SectionTitle.section-title Supported & Upcoming Chains
+    SectionTitle.section-title {{ $t('SUPPORTED_UPCOMING_CHAINS_TITLE') }}
     .chains
-      img.chain(src='~/assets/images/supportedchain-4.svg')
+      img.chain(v-if="$colorMode.value == 'light'" src='~/assets/images/supportedchain-4-dark.svg')
+      img.chain(v-else src='~/assets/images/supportedchain-4.svg')
       img.chain(src='~/assets/images/supportedchain-1.svg')
       img.chain(src='~/assets/images/supportedchain-2.svg')
-      img.chain(src='~/assets/images/supportedchain-3.svg')
-      span.more and more...
+      img.chain(v-if="$colorMode.value == 'light'" src='~/assets/images/supportedchain-3-dark.svg')
+      img.chain(v-else src='~/assets/images/supportedchain-3.svg')
+      span.more {{ $t('and more...') }}
     .inner-container
-      span.title Building a global community.
-      p.text Learn more about Alcor, chat with the community,
-        br
-        | and get announcements faster than anyone.
+      span.title {{ $t('BUILDINGGLOBALCOMMUNITY') }}
+      p.text {{ $t('LEARNMORE') }}
       .social-items
         a.item(href="https://t.me/alcorexchange" target="_blank")
           .icon
             img(src='~/assets/icons/Telegram.svg')
           span.name Telegram
-          span.desc Support & Talks
-        a.item(href="https://avral.medium.com/" target="_blank")
-          .icon
-            img(src='~/assets/icons/Monogram.svg')
-          span.name Medium
-          span.desc Reviews & News
+          span.desc {{ $t('TRAIDING_TALKS') }}
         a.item(href="https://twitter.com/alcorexchange" target="_blank")
           .icon
             img(src='~/assets/icons/Twitter.svg')
           span.name Twitter
-          span.desc Announcements
+          span.desc {{ $t('ANOUNCEMENT') }}
+        a.item(href="https://avral.medium.com/" target="_blank")
+          .icon
+            img(src='~/assets/icons/Monogram.svg')
+          span.name Medium
+          span.desc {{ $t('REVIEW_NEWS') }}
         a.item(href="https://github.com/avral/alcor-ui" target="_blank")
           .icon
             img(src='~/assets/icons/Github.svg')
           span.name Github
-          span.desc Code & Contribuion
-      span.title Partners & API Providers
+          span.desc {{ $t('CODE_CONTIBUTE') }}
+        a.item(href="http://api.alcor.exchange/" target="_blank")
+          .icon
+            img(src='~/assets/icons/Api.svg')
+          span.name API
+          span.desc {{ $t('Alcor API Docs') }}
+      span.title {{ $t('PARTNERS_PROVIDERS') }}
       .items
         a.item(v-for="{ image, url, padding } in items" :href="url" target="_blank" :style="{ padding }")
           img(:src="image")
         a(href="https://eosamsterdam.net/")
-          EOS
-
+          EOS(v-if="$colorMode.value == 'dark'")
+          img(v-else src='~/assets/images/partners-1.svg')
 
 </template>
 
@@ -81,11 +86,11 @@ export default {
 }
 
 .section-title {
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 
 .chains {
-  margin-bottom: 30px;
+  margin-bottom: 60px;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -93,13 +98,11 @@ export default {
 
 .inner-container {
   padding: 40px 10px;
-  background: rgba(33, 33, 33, 0.6);
-  background: var(--hover);
+  background-color: var(--hover);
   border-radius: 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
-
 
   .title {
     font-size: 2rem;
@@ -129,12 +132,12 @@ export default {
       flex-direction: column;
       align-items: center;
       transition: opacity 0.3s;
-      padding: 12px;
 
       @media only screen and (max-width: 600px) {
         width: 50%;
       }
 
+      padding: 8px 12px;
 
       &:hover {
         opacity: 0.8;
@@ -192,6 +195,8 @@ export default {
 
   .chain {
     max-width: 90%;
+    fill: red;
+    color: red;
 
   }
 

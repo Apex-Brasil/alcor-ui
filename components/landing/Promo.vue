@@ -1,5 +1,5 @@
 <template lang="pug">
-router-link(:to="{ name: 'trade-index-id', params: { id: promo.slug } }")
+router-link(:to="{ name: `trade-index-id___${$i18n.locale}`, params: { id: promo.slug } }")
   .promo
     .chart(v-if="series[0].data")
       .header
@@ -16,7 +16,7 @@ router-link(:to="{ name: 'trade-index-id', params: { id: promo.slug } }")
           .data(:class="{ isRed, isZero }") ({{ pricePercent }}%)
         span
           .label
-            .gray 1D Volume
+            .gray {{ $t('1D Volume') }}
             span {{ promo.volume24.toFixed(2).replace('.', ',') }}
           .data(:class="{ isRed: isVolRed, isZero: isVolZero }") ({{ liquidityPercent }} %)
     .banner
@@ -56,14 +56,14 @@ export default {
         margin: 0,
         offsetY: 20,
         style: {
-          color: '#f2f2f2',
+          color: 'var(--text-default)',
           fontSize: '10px',
           fontWeight: 400,
           fontFamily: 'Roboto, Arial, sans-serif'
         }
       },
       grid: {
-        borderColor: '#333333',
+        borderColor: 'var(--border-color)',
         xaxis: { lines: { show: true } },
         yaxis: { lines: { show: true } }
       },
@@ -71,15 +71,15 @@ export default {
         lines: { show: false },
         type: 'datetime',
         tooltip: { enabled: false },
-        axisBorder: { color: '#333333' },
+        axisBorder: { color: 'var(--border-color)' },
         axisTicks: {
-          color: '#333333',
+          color: 'var(--border-color)',
           height: 6
         },
         labels: {
           datetimeUTC: false,
           style: {
-            colors: '#f2f2f2',
+            colors: 'var(--text-default)',
             fontSize: '10px',
             fontFamily: 'Roboto, Arial, sans-serif'
           },
@@ -93,12 +93,12 @@ export default {
         opposite: true,
         axisTicks: {
           show: true,
-          color: '#333333',
+          color: 'var(--border-color)',
           width: 6
         },
         labels: {
           style: {
-            colors: ['#fff'],
+            colors: ['var(--text-default)'],
             fontSize: '10px',
             fontFamily: 'Roboto, Arial, sans-serif'
           }
@@ -180,7 +180,7 @@ export default {
 }
 
 .chart {
-  border: 1px solid #333;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   padding: 16px 15px;
   display: flex;
@@ -231,7 +231,6 @@ export default {
 }
 
 .banner img {
-  height: 100%;
   border-radius: 4px;
 }
 

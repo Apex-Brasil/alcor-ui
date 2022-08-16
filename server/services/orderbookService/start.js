@@ -154,17 +154,26 @@ async function initialUpdate() {
 
 export async function main() {
   const uri = `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/alcor_prod_new`
-  await mongoose.connect(uri, { useUnifiedTopology: true, useNewUrlParser: true })
+  await mongoose.connect(uri, { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true })
 
   // Redis
   await client.connect()
   await publisher.connect()
   await subscriber.connect()
 
+  // FOR PM2
+  //process.send('ready')
+  //process.on('SIGINT', async () => {
+  //  await mongoose.connection.close()
+
+  //  await client.quit()
+  //  process.exit(0)
+  //})
+
   //initialUpdate()
   // FIXME JUST FOR TEST
-  updateOrders('sell', 'wax', 0)
-  updateOrders('buy', 'wax', 0)
+  //updateOrders('sell', 'wax', 0)
+  //updateOrders('buy', 'wax', 0)
 
   subscriber.subscribe('market_action', message => {
     const [chain, market, action] = message.split('_')
@@ -177,4 +186,6 @@ export async function main() {
       throttledUpdate('sell', chain, market)
     }
   })
+
+  console.log('OrderbookService setarted')
 }

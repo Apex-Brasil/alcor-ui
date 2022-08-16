@@ -1,6 +1,6 @@
 <template lang="pug">
 .alcor-inner(:class="{ 'full-width': fullWidth }")
-  top-nav(:class="{ 'alcor-inner': $route.name == 'index' }")
+  top-nav(:class="{ 'alcor-inner': $route.name == `index___${$i18n.locale}` }")
 
   AlcorLoading
   ResourcesModal
@@ -48,7 +48,9 @@ export default {
   computed: {
     fullWidth() {
       // Full with for this pages
-      return ['trade-index-id', 'index'].includes(this.$route.name)
+      const tradeLocales = this.$i18n.locales.map(({ code }) => `trade-index-id___${code}`)
+      const indexLocales = this.$i18n.locales.map(({ code }) => `index___${code}`)
+      return [...tradeLocales, ...indexLocales].includes(this.$route.name)
     },
 
     menuItems() {
@@ -89,6 +91,15 @@ export default {
     } catch (e) {
       this.netError = true
       console.log('Net error', e)
+    }
+
+    if (!document.querySelector('html').getAttribute('trade-theme')) {
+      if (!window.localStorage.getItem('trade-theme')) window.localStorage.setItem('trade-theme', 'default')
+      document.querySelector('html').setAttribute('trade-theme', window.localStorage.getItem('trade-theme'))
+      this.$store.commit(
+        'settings/setTradeColor',
+        window.localStorage.getItem('trade-theme')
+      )
     }
   },
 
@@ -142,6 +153,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   padding: 12px 0;
+  flex-wrap: nowrap;
 
   .nav-side {
     display: flex;
@@ -152,6 +164,7 @@ export default {
 .full-width {
   max-width: 1920px;
   padding: 0px;
+  overflow-x: hidden;
 
   .nav {
     padding: 12px 20px;

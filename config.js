@@ -35,7 +35,7 @@ const networks = {
     protocol: 'https',
     monitor: 'http://bloks.io',
     monitor_params: '',
-    lightapi: 'https://api.light.xeos.me',
+    lightapi: 'https://eos.light-api.net',
     hyperion: 'https://api.eossweden.org/',
     //hyperion: 'https://api.eossweden.org/',
     //hyperion: 'https://eos.hyperion.eosrio.io/v2/',
@@ -129,7 +129,7 @@ const networks = {
       'HASH@eoshashcoins',
       'JOKER@joker.eos',
     ],
-    PROMOTED_MARKETS: [],
+    PINNED_MARKETS: [],
     BANNER_MARKETS: [],
     SCAM_CONTRACTS: ['usdcoinchain', 'effectaiswap', 'tcapitalnote'],
     CEX_CONTRACTS: [],
@@ -162,7 +162,7 @@ const networks = {
     protocol: 'https',
     monitor: 'http://proton.bloks.io',
     monitor_params: '',
-    lightapi: 'https://lightapi.eosamsterdam.net',
+    lightapi: 'https://proton.light-api.net',
     hyperion: 'https://proton.eu.eosamsterdam.net',
     backEnd: 'https://alcor.exchange/api/',
 
@@ -192,7 +192,7 @@ const networks = {
     withdraw: {},
 
     RECOMMENDED_MARKETS: ['PIXEL@thomashp'],
-    PROMOTED_MARKETS: [],
+    PINNED_MARKETS: [],
     BANNER_MARKETS: [],
     SCAM_CONTRACTS: [],
     CEX_CONTRACTS: [],
@@ -215,7 +215,7 @@ const networks = {
       precision: 8,
     },
 
-    marketCreationFee: '700.00000000 WAX',
+    marketCreationFee: '1000.00000000 WAX',
     feeAccount: 'aw.aq.waa',
 
     chainId: '1064487b3cd1a897ce03ae5b6a865651747e2e152090f99c1d19d44e01aea5a4',
@@ -225,7 +225,7 @@ const networks = {
     protocol: 'https',
     monitor: 'http://wax.bloks.io',
     monitor_params: '',
-    lightapi: 'https://lightapi.eosamsterdam.net',
+    lightapi: 'https://wax.light-api.net',
     hyperion: 'https://wax.eosrio.io',
 
     //hyperion: 'https://wax.pink.gg/',
@@ -255,7 +255,7 @@ const networks = {
     withdraw: {},
 
     RECOMMENDED_MARKETS: ['DWD@diggerstoken', 'BRWL@brawlertoken'],
-    PROMOTED_MARKETS: [495, 424],
+    PINNED_MARKETS: [424],
     BANNER_MARKETS: [495, 424],
 
     SCAM_CONTRACTS: [
@@ -306,7 +306,7 @@ const networks = {
     protocol: 'https',
     monitor: 'http://telos.bloks.io',
     monitor_params: '',
-    lightapi: 'https://api.light.xeos.me',
+    lightapi: 'https://telos.light-api.net',
     //hyperion: 'https://hyperion.telosgermany.io/v2/',
     hyperion: 'http://api.kainosbp.com',
     backEnd: 'https://alcor.exchange/api/',
@@ -330,7 +330,7 @@ const networks = {
       'KANDA@telokandaone',
       'GUX@vapaeetokens',
     ],
-    PROMOTED_MARKETS: [],
+    PINNED_MARKETS: [],
     BANNER_MARKETS: [],
     SCAM_CONTRACTS: ['usdcoinchain'],
     CEX_CONTRACTS: [],
@@ -415,7 +415,7 @@ const networks = {
       'TLOS@bosibc.io',
       '',
     ],
-    PROMOTED_MARKETS: [],
+    PINNED_MARKETS: [],
     BANNER_MARKETS: [],
     SCAM_CONTRACTS: ['usdcoinchain'],
     CEX_CONTRACTS: [],
@@ -463,7 +463,7 @@ const networks = {
 
     withdraw: {},
     RECOMMENDED_MARKETS: [],
-    PROMOTED_MARKETS: [],
+    PINNED_MARKETS: [],
     BANNER_MARKETS: [],
     SCAM_CONTRACTS: ['usdcoinchain'],
     CEX_CONTRACTS: [],
@@ -510,7 +510,7 @@ const networks = {
 
     withdraw: {},
     RECOMMENDED_MARKETS: [],
-    PROMOTED_MARKETS: [],
+    PINNED_MARKETS: [],
     BANNER_MARKETS: [],
     SCAM_CONTRACTS: ['usdcoinchain'],
     CEX_CONTRACTS: [],
@@ -557,7 +557,7 @@ const networks = {
 
     withdraw: {},
     RECOMMENDED_MARKETS: [],
-    PROMOTED_MARKETS: [],
+    PINNED_MARKETS: [],
     BANNER_MARKETS: [],
     SCAM_CONTRACTS: ['usdcoinchain'],
     CEX_CONTRACTS: [],
@@ -603,7 +603,7 @@ const networks = {
 
     withdraw: {},
     RECOMMENDED_MARKETS: [],
-    PROMOTED_MARKETS: [],
+    PINNED_MARKETS: [],
     BANNER_MARKETS: [],
     SCAM_CONTRACTS: ['usdcoinchain'],
     CEX_CONTRACTS: [],
